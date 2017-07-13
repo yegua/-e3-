@@ -1,0 +1,4 @@
+/* pages/tongbi/tongbi.wxss */
+picker{
+  width: 60%;
+}

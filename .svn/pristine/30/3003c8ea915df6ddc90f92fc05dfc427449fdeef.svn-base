@@ -1,0 +1,63 @@
+function formatTime(date) {
+  var year = date.getFullYear()
+  var month = date.getMonth() + 1
+  var day = date.getDate()
+
+  var hour = date.getHours()
+  var minute = date.getMinutes()
+  var second = date.getSeconds()
+
+
+  return [year, month, day].map(formatNumber).join('/');
+};
+
+function dateDiffDay( currentDate , num, type ){
+	    var _s, _d, _time, _time2,
+	    	_dateObj = typeof currentDate == 'string' ? new Date( currentDate ) : currentDate,
+	    	_selectNum = num ? num : 4,
+	    	_curType = type ? type : 'before';
+	    	
+	    _time = _dateObj.getTime();
+      console.log(_dateObj);
+	    _time2 = _selectNum * 1000 * 3600 * 24;
+	    
+	    if ( _curType == 'before' ) {
+	   		_time -= _time2; 	
+	    } else {
+	    	_time += _time2;
+	    }
+	   
+	    _d = new Date( _time );
+	    _s = _d.getFullYear() + '/';
+	    _s += ( '00' + ( _d.getMonth() + 1 ) ).slice(-2) + '/';
+	    _s += ( '00' + _d.getDate() ).slice(-2);
+	    
+	    return _s;
+};
+function formatNumber(n) {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+
+function showMsg(msg,flag){
+   if(flag==false){
+       wx.showToast({
+        title: msg,
+        image: '../../images/icon_warning.png',
+        duration: 2000
+      })
+   };
+   if(flag==true){
+      wx.showToast({
+        title: msg,
+        icon: 'success',
+        duration: 2000
+      })
+   }
+} 
+
+module.exports = {
+  formatTime: formatTime,
+  showMsg: showMsg,
+  dateDiffDay: dateDiffDay
+}

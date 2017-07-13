@@ -1,0 +1,142 @@
+// pages/kehumd/kehumd.js
+var util = require('../../utils/util.js');
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.requestData();
+  },
+  //点击选择客户信息
+  selectCustomer: function (e) {
+    console.log(e.currentTarget.dataset)
+    wx.redirectTo({
+      url: '/pages/kehuyj/kehuyj?customerCode=' + e.currentTarget.dataset.code + '&name=' + e.currentTarget.dataset.name
+    });
+  },
+  // 获取数据
+  requestData: function () {
+    var self = this;
+    var _sitecode = JSON.parse(wx.getStorageSync('userDetail')).sitecode;
+    util.requestData('download.customer', { siteCode: _sitecode}, wx.getStorageSync('sessionid'), function (res) {
+      console.log(res);
+      var letters = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(''),
+        contentList = { letter: '', data: [] }, newsortData = [],reg = /^\w$/i;
+      for (var i = 0; i < letters.length; i++) {
+        contentList = { letter: letters[i], data: [] };
+        res.forEach(function (item) {
+          if (reg.test(item.name.substring(0, 1))) {
+            res['letter'] = '#';
+          }else{
+            res['letter'] = util.pinyin.getCamelChars(item.name.substring(0, 1));
+          };
+          if (res['letter'] == letters[i]) {
+            contentList.data.push(item);
+          };
+        });
+        if (contentList.data.length != 0) {
+          newsortData.push(contentList);
+        };
+        // console.log(newsortData);
+      }
+
+      self.setData({
+        contents: newsortData
+      });
+    })
+  },
+  searchInput: function(e){
+      var self = this;
+      var dataList = this.data.contents,
+        keyValue = e.detail.value,
+        temperData = null,
+        curData = {},
+        newSortData = [];
+      console.log(dataList);
+      if (keyValue.length === 0) {
+        self.requestData();
+      } else {
+        dataList.forEach(function (item) {
+            curData = { data: [], letter: '' },
+            temperData = item.data;
+          for (var i = 0; i < temperData.length; i++) {
+            if (temperData[i].name.indexOf(keyValue) != -1) {
+              curData.letter = item.letter;
+              curData.data.push(temperData[i]);
+            };
+          };
+          if (curData.data.length!=0){
+              newSortData.push(curData);
+          };
+          console.log(newSortData);
+        });
+        
+        if (newSortData.length != 0) {
+          self.setData({
+            contents: newSortData
+          });
+        } else {
+          util.showMsg('查无此记录', false);
+        }
+      }
+  },
+  wxSortPickerViewScroll :function(e){
+      console.log(e.detail.scrollTop);
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    console.log(this.selectCustomer);
+  },
+ 
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  }
+})

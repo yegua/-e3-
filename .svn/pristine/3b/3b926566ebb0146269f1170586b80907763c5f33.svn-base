@@ -1,0 +1,10 @@
+<!--pages/.wxml-->
+<view class="fun-title">
+    领导决策报表
+</view>
+<view class="flex-item">
+    <navigator class="index-menu-item" wx:for="{{indexmenu}}" wx:key="{{item.url}}" url="../{{item.url}}/{{item.url}}">
+        <image src="{{item.icon}}"></image>
+        <text>{{item.text}}</text>
+    </navigator>
+</view>

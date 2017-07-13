@@ -1,0 +1,19 @@
+<!--pages/tongbi/tongbi.wxml-->
+<view id="chart-container">
+    <view class="section-title">{{tongbiYear}}</view>
+<canvas canvas-id="echarts-canvas" />
+ <view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect flex-pack-center">
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindYearDate">        
+          <view class="picker">{{tongbiYear}}</view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    
+</view>

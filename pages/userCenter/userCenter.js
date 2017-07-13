@@ -1,0 +1,43 @@
+Page({
+  data:{
+    employeeName: '',
+    siteName: ''
+  },
+  onLoad:function(options){
+    // 页面初始化 options为页面跳转所带来的参数
+    var userDetail = JSON.parse(wx.getStorageSync('userDetail'));
+    console.log(userDetail);
+    this.setData({
+      employeeName: userDetail.employeeName,
+      siteName: userDetail.sitename
+    })
+  },
+  onReady:function(){
+    // 页面渲染完成
+  },
+  onShow:function(){
+    // 页面显示
+  },
+  onHide:function(){
+    // 页面隐藏
+  },
+  exitLogin: function(){
+    wx.showModal({
+      title: '提示',
+      content: '您是否要退出登录？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.redirectTo({
+              url: '../login/login',
+          })
+        } else if (res.cancel) {
+            return false;
+        }
+      }
+    })
+   
+  },
+  onUnload:function(){
+    // 页面关闭
+  }
+})

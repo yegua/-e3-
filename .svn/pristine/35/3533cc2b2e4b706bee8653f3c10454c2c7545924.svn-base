@@ -1,0 +1,39 @@
+/**index.wxss**/
+page{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+swiper-item image {
+    width:100%;
+}
+.search-input {
+  width: 100%;
+  padding: 8px 6%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+   background-color: #dcdcdc;
+}
+.search-input input{
+  width: 85%;
+  padding: 0 20px;
+  height: 1.8rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  background: #fff;
+  text-align: left;
+  font-size: 35rpx;
+}
+.search-input text{
+  width: 1.7rem;
+  height: 1.7rem;
+  background-image: url(http://oqecsd659.bkt.clouddn.com/icon-scan.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1.2rem;
+  background-color: #fff;
+  display: inline-block;
+  padding: 0 10px;
+}

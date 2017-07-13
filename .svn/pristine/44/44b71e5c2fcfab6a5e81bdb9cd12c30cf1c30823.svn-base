@@ -1,0 +1,173 @@
+// pages/echart-column/echart-column.js
+var Echarts=require('../../utils/wxcharts.js');
+var util = require('../../utils/util.js');
+var app = getApp()
+Page({
+    data:{
+        dayDate: '日查询（5天）',
+        monthDate: '月查询（5月）',
+        pickshow: true,
+        iconshow: false,
+        confirmshow: true,
+        curDate: '' ,
+        swiperCurrent: 0    
+    },
+    //按日期查询
+    bindDateDay: function(e){
+      this.setData({
+          dayDate: util.dateDiffDay((e.detail.value), 4, 'before') + '-' + (e.detail.value).replace(/-/g, '/'),
+          monthDate: '月查询（5月）'
+      })
+    },
+    //按月份查询
+    bindDateMonth: function(e){
+      this.setData({
+          dayDate: '日查询（5天）',
+          monthDate: util.dateRangeByMonth(e.detail.value)
+      })
+    },
+    bindShow: function(){
+        console.log(111);
+        this.setData({
+            pickshow: false ,
+            iconshow: true,
+            confirmshow: false 
+        })
+    },
+    bindHide: function(){
+        this.setData({ 
+            pickshow: true ,        
+            iconshow: false,
+            confirmshow: true 
+        });
+        console.log(this.data.startdate);
+        this.requestData();
+    },
+    //前查
+    bindBefore: function(){
+      var curDate = this.data.dayDate,
+        curMonth = this.data.monthDate;
+        console.log(curMonth);
+        if (curDate !== '日查询（5天）') {
+          this.setData({
+            dayDate: util.dateDiffDay(curDate.split('-')[0], 5, 'before') + '-' + util.dateDiffDay(curDate.split('-')[0], 1, 'before')
+          });
+        } else {
+          this.setData({
+            monthDate: util.dateRangeByMonth(util.dateDiffMonth(curMonth.split('-')[0], 1, 'before'))
+          });
+        };
+        this.requestData();
+    },
+    //后查
+    bindAfter: function(){
+        var curDate = this.data.dayDate,
+          curMonth = this.data.monthDate;
+        if (curDate !== '日查询（5天）') {
+          this.setData({
+              dayDate: util.dateDiffDay(curDate.split('-')[1], 1, 'after') + '-' + util.dateDiffDay(curDate.split('-')[1], 5, 'after')
+          });
+        } else {
+          this.setData({
+              monthDate: util.dateRangeByMonth(util.dateDiffMonth(curMonth.split('-')[1], 1, 'after'), 4, 'after')
+          });
+        };
+        this.requestData();
+    },
+    swiperChange: function (e) {
+      this.setData({
+        swiperCurrent: e.detail.current
+      })
+    },
+    clickCurrent: function (e) {
+      var _index = e.target.dataset.index;
+      this.setData({
+        swiperCurrent: _index
+      })
+    },
+    requestData: function(){
+        var self=this;
+        wx.getSystemInfo({
+          success: function(res) {     
+            console.log(res.windowWidth); 
+            self.setData({
+              windowWidth: res.windowWidth
+            })      
+          }
+        });
+        var _timeObj = null,
+          _type = '0';
+        var _curDate = this.data.dayDate,
+          _curMonth = this.data.monthDate;
+        if (_curDate !== '日查询（5天）') {
+          _timeObj = _curDate.split('-');
+          this.setData({
+            curDate: _curDate
+          })
+        } else {
+          _timeObj = _curMonth.split('-');
+          this.setData({
+            curDate: _curMonth
+          });
+          _type = '1';
+        };
+        util.requestData('statistics.enteringLeaving',
+          {
+              startTime: _type != '1' ? _timeObj[0] : _timeObj[0] + '-01',
+              endTime: _type != '1' ? _timeObj[1] : util.endDayOfMonth(_timeObj[1]),          
+              dayMonth: _type
+          },
+          wx.getStorageSync('sessionid'),
+        function(res){
+            var dateList=[],totalImport=0,totalOut=0;
+            var outData=[],importData=[];
+             res.forEach(function(item){          
+                    dateList.push(item.date);
+                    outData.push(item.purchase);                  
+                    importData.push(item.shipments);
+                    totalImport += Number(item.purchase);
+                    totalOut += Number(item.shipments);
+            });
+             self.setData({
+               listData: res,
+               totalPur: totalImport,
+               totalShip: totalOut
+             });
+            new Echarts({
+                canvasId: 'echarts-canvas',
+                type: 'column',
+                categories: dateList,
+                series: [{
+                    name: '出港',
+                    data: outData
+                }, {
+                    name: '入港',
+                    data: importData
+                }],
+                yAxis: {
+                    format: function (val) {
+                        return val + '件';
+                    },
+                    min: 0
+                },
+                width: self.data.windowWidth,
+                height: 320
+            });
+        })
+    },
+    onLoad:function(){
+      var self=this;                     
+      this.setData({      
+        dayDate: util.dateDiffDay(util.formatTime(new Date(), 'date'), 4, 'before') + '-' + util.formatTime(new Date(), 'date'),
+        curDate: util.dateDiffDay(util.formatTime(new Date(), 'date'), 4, 'before') + '-' + util.formatTime(new Date(), 'date')
+      });
+       this.requestData();    
+    },
+    onReady: function(){
+       // 页面渲染完成
+       
+        
+        
+    }
+
+});

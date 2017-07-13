@@ -1,0 +1,53 @@
+<!--pages/echart-line/echart-line.wxml-->
+<view id="chart-container">
+    <view class="section-title">{{startdate}}—{{enddate}}</view>
+<swiper current="{{swiperCurrent}}" bindchange="swiperChange">  
+    <swiper-item>
+        <canvas canvas-id="echarts-canvas" />
+    </swiper-item>
+    <swiper-item>
+        <view class="table">
+            <view class="tr bg-w">
+              <view class="th">日期</view>
+              <view class="th">进港量</view>
+              <view class="th ">出港量</view>
+            </view>
+            <block wx:for="{{listData}}" wx:key="{{data}}">
+              <view class="tr bg-g">
+                <view class="td">{{item.date}}</view>
+                <view class="td">{{item.purchase}}</view>
+                <view class="td">{{item.shipments}}</view>
+              </view>
+            </block>
+             <view class="tr bg-w">
+                <view class="td">汇总</view>
+                <view class="td">{{totalPur}}</view>
+                <view class="td">{{totalShip}}</view>
+              </view>
+        </view>
+    </swiper-item>
+     <view class="dots">        
+        <view data-index="0" bindtap="clickCurrent" class="dot{{swiperCurrent == 0 ? ' active' : ''}}">1</view>
+        <view data-index="1" bindtap="clickCurrent" class="dot{{swiperCurrent == 1 ? ' active' : ''}}">2</view>          
+    </view>  
+</swiper>
+ <view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect">
+        <picker mode="date" value="{{date}}" start="2010-09" end="2017-09" bindchange="bindDateStart">        
+          <view class="picker">{{startdate}}</view>
+        </picker>
+        <picker mode="date" value="{{date}}" start="2010-09" end="2017-09" bindchange="bindDateEnd">
+          <!--<input type="text" placeholder="结束时间" class="picker" value="{{enddate}}" disabled/>-->
+           <view class="picker">{{enddate}}</view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    
+</view>
+

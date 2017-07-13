@@ -1,0 +1,150 @@
+/**app.wxss**/
+page{
+    width: 100%;
+    height: 100%;
+}
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+.ui-container {
+    width: 100%;
+    height: 100%;
+    background-image: url(http://oqecsd659.bkt.clouddn.com/login_bg.png);
+    background-size: 100% 100%;
+}
+.fun-title {
+    width: 100%;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    font-size: 1rem;
+    background: #0099cd;
+    color: #fff;
+    margin: 10px 0;
+    padding-left: 10px; 
+}
+#chart-container {
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+    position: relative;
+    overflow: hidden;
+}
+canvas{
+    width: 100%;
+    height: 70%;
+    transform: scale(1);
+    padding-top: 30px;
+}
+.section-title{
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+}
+#chart-container .section, #chart-container .selectTime{
+    position: absolute;
+    left: 0;
+    bottom: 45px;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #ddd;
+}
+#chart-container .selectTime{  
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    bottom:5px;
+    height:40px;
+    background-color: #efefef;
+}
+#chart-container .selectTime view{
+    position: absolute;
+    top: 0;
+    width: 33%;
+    height: 40px;
+    line-height: 40px;
+    box-sizing: border-box;
+}
+
+#chart-container .selectTime .hide{
+    display: none;
+}
+#chart-container .selectTime .show{
+    display: inline-block;
+}
+#chart-container .selectTime view:nth-child(1){
+    left: 0;
+    padding-left: 10px;
+}
+#chart-container .selectTime view:nth-child(2),#chart-container .selectTime view:nth-child(3){
+    left: 33.3%;
+}
+#chart-container .selectTime view:nth-child(2){
+    background: url(http://oqecsd659.bkt.clouddn.com/green_tri.png) no-repeat center center;
+    background-size: 1.5em;
+}
+#chart-container .selectTime view:nth-child(3){
+    text-align: center;
+}
+#chart-container .selectTime view:nth-child(4){
+    left: 66.6%;
+    text-align: right;
+    padding-right: 10px;
+}
+#chart-container .pickerSelect{
+    width: 100%;
+    display: flex;
+}
+picker{
+    width: 45%;
+    margin: 5px;
+    background: #fff;
+    font-size: 16px; 
+    padding: 5px;
+    border: 1px solid #161616;
+    border-radius: 3px;
+}
+.flex {
+     display: -webkit-flex;
+    display: -webkit-box;
+    display: flex;
+}
+.flex-pack-center{
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.flex-align-center{    
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.flex-pack-justify{
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.flex-pack-around{
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: justify;
+    justify-content: space-around;
+}
+.flex-hw {
+  /* 09版 */
+  /*-webkit-box-lines: multiple;*/
+  /* 12版 */
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  -o-flex-wrap: wrap;
+  flex-wrap: wrap;
+}

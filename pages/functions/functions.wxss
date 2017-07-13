@@ -1,0 +1,38 @@
+
+.flex-item{
+    width: 100%;
+    padding: 0 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+}
+.flex-item .index-menu-item{
+    -webkit-box-flex: 24.5%;
+    -webkit-flex: 24.5%;
+    flex: 24.5%;
+    max-width: 24.5%;
+    padding: 5px;
+    margin-bottom: 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+}
+.flex-item .index-menu-item image{
+    width: 70%;
+    height: 60px;
+}
+.flex-item .index-menu-item text{
+   display: block;
+   width: 100%;
+   font-size: 26rpx;
+   white-space: wrap;
+   word-break: break-all;
+   line-height: 1.2;
+   text-align: center;
+}

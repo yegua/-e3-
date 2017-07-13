@@ -1,0 +1,47 @@
+/* pages/query/kuaijiangz/kuaijiangz.wxss */
+.search-input {
+  width: 100%;
+  padding: 8px 6%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+   background-color: #dcdcdc;
+}
+.search-input input{
+  width: 85%;
+  padding: 0 20px;
+  height: 2rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  background: #fff;
+  text-align: left;
+  font-size: 35rpx;
+}
+.search-input text{
+  width: 1.9rem;
+  height: 1.9rem;
+  background-image: url(http://oqecsd659.bkt.clouddn.com/tm2.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1.2rem;
+  background-color: #fff;
+  display: inline-block;
+  padding: 0 10px;
+   font-size: 35rpx;
+}
+.icon-right {
+  padding: 30rpx;
+  background: url(http://oqecsd659.bkt.clouddn.com/icon_rightArrow.png) no-repeat center center;
+  background-size: 60rpx;
+}
+.ui-select-row {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+}
+.ui-select-row text:nth-child(2){
+    width: 60%;
+}
+.ui-select-row text{
+  font-size: 35rpx;
+}

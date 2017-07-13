@@ -1,0 +1,29 @@
+/* pages/wuliaokc/wuliaokc.wxss */
+.search-input{
+  width: 80%;
+  height: 36px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding-left: 10px;
+   margin-bottom: 20px;
+}
+.kc-title {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+}
+.ui-content-lists {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+}
+.content-lists view:nth-child(1){
+    padding: 20px 0 20px 20px;
+}
+.content-lists view:nth-child(2){   
+    padding: 20px 20px 20px 0;
+}
+.ui-letter {
+    width: 100%;
+    background: #ccc;
+    padding: 6px 20px;
+}

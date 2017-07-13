@@ -1,0 +1,43 @@
+<!--pages/kehumd/kehumd.wxml-->
+<view id="chart-container">
+    <view class="search-box">
+         <input type="view" placeholder="请输入客户名" class="search-input" confirm-type="search" bindchange="searchInput"/>
+    </view>
+    <scroll-view id="content-box" scroll-y="true" style="height: {{contents.view.scrollHeight}}px;" bindscroll="wxSortPickerViewScroll">
+        <view class="ui-content-lists" wx:for="{{contents}}" wx:key="id">
+             <view class="ui-letter">{{item.letter}}</view>
+            <view class="content-lists flex flex-pack-justify" wx:for="{{item.data}}" wx:for-item="data">
+               <view bindtap="selectCustomer" data-code="{{data.code}}" data-name="{{data.name}}">{{data.name}}</view>
+            </view>        
+        </view>
+    </scroll-view>
+    <view class="mui-indexed-list-bar">
+        <view hover-class="active">#</view>
+        <view hover-class="active">A</view>
+        <view hover-class="active">B</view>
+        <view hover-class="active">C</view>
+        <view hover-class="active">D</view>
+        <view hover-class="active">E</view>
+        <view hover-class="active">F</view>
+        <view hover-class="active">G</view>
+        <view hover-class="active">H</view>
+        <view hover-class="active">I</view>
+        <view hover-class="active">J</view>
+        <view hover-class="active">K</view>
+        <view hover-class="active">L</view>
+        <view hover-class="active">M</view>
+        <view hover-class="active">N</view>
+        <view hover-class="active">O</view>
+        <view hover-class="active">P</view>
+        <view hover-class="active">Q</view>
+        <view hover-class="active">R</view>
+        <view hover-class="active">S</view>
+        <view hover-class="active">T</view>
+        <view hover-class="active">U</view>
+        <view hover-class="active">V</view>
+        <view hover-class="active">W</view>
+        <view hover-class="active">X</view>
+        <view hover-class="active">Y</view>
+        <view hover-class="active">Z</view>
+      </view>
+</view>

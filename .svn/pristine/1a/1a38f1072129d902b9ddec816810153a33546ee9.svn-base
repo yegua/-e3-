@@ -1,0 +1,36 @@
+<view id="query-content">
+      <view class="search-input flex flex-align-center">
+        <input type="text" placeholder="请输入单号查询快递信息" value="{{code}}" bindinput="bindChangeinput"/>
+        <text bindtap="scanCode"></text>
+    </view>
+    <view class="ui-select-row flex flex-pack-justify flex-align-center">
+        <text>快递公司</text>
+        <text bindtap="selectExpress">{{expressName}}</text>
+        <text class="icon-right" bindtap="selectExpress"></text>
+    </view>
+    <view class="ui-button-row">
+			<button class="ui-button" bindtap="queryCodeFn" style="background-color: {{diabledColor}};"><text class="ui-icon-search"></text>查询</button>
+		</view>
+    <view class="ui-history">
+			<view class="ui-history-tip" hidden="{{historyToggleno}}">无查件历史信息，点击搜索框快速查件</view>
+			<view class="ui-history-content" hidden="{{historyToggle}}">
+				<view class="ui-history-nav">
+					<label>历史记录</label>
+					<text class="ui-history-clear" bindtap="clearHistoryListFn">清除历史</text>
+				</view>							
+				<view class="table-view-cell" wx:for="{{historyListData}}" id="{{item.id}}" bindtouchstart="drawStart" bindtouchmove="drawMove" bindtouchend="drawEnd" style="right:{{item.right}}px">
+						<view class="ui-slider-handle" bindtap="historyQueryFn">
+							运单号：<text style="margin-right: 15px;">{{item.billcode}}</text><text>{{item.type}}</text>
+						</view>
+            <view class="remove" data-id="{{item.id}}" bindtap="deleteHistoryRecordFn">
+							删除
+						</view>
+				</view>				
+			</view>
+		</view>
+    <view class="ui-popover" hidden="{{showPopover}}">     
+        <view class="popover-view-cell" wx:for="{{listData}}" data-code="{{item.id}}" bindtap="selectedList">        
+            {{item.data}}         
+        </view>     
+    </view>
+</view>

@@ -1,0 +1,59 @@
+<view id="chart-container">
+      <view class="ui-total-statistics flex">
+          <label>总订单<text>{{totalOrder}}</text></label>
+          <label>完成率<text>{{totalOrderComplete}}</text></label>
+      </view>
+      <view class="ui-warehouse-lists flex" >
+          <text wx:for="{{warehouse}}" data-index="{{item}}" wx:for-index="index"
+           bindtap="clickSelect" class="{{currentIndex == item ? ' selected' : ''}}">{{item}}</text>          
+      </view>
+      <view class="table">
+          <view class="tr bg-w titletr">
+            <view class="th" style="width: 16%;">平台</view>
+            <view class="th" style="width: 34%;">接单已称重订单数</view>
+            <view class="th" style="width: 34%;">接单未称重订单数</view> 
+            <view class="th" style="width: 16%;border-right: none;">总完成率</view>             
+          </view>
+          <view class="content">
+            <view class="tr bg-g" wx:for="{{listData}}" wx:key="{{data}}">
+              <view class="td"style="width: 16%;">{{item.platformName}}</view>
+              <view class="td"style="width: 34%;">{{item.alreadyWeighing}}</view>
+              <view class="td"style="width: 34%;">{{item.noWeighing}}</view>
+              <view class="td"style="width: 16%;border-right: none;">{{item.completionRate+'%'}}</view>                
+            </view>
+          </view>
+          <view class="tr bg-w lasttr">
+            <view class="th" style="width: 16%;">总计</view>
+            <view class="th" style="width: 34%;">{{totalWeight}}</view>
+             <view class="th" style="width: 34%;">{{totalNoweight}}</view>  
+              <view class="th"style="width: 16%;border-right: none;">{{totalComplete}}</view>                
+          </view>
+      </view>
+      <view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect">
+        <view class="timeStyle">
+            <button data-index="0" class="{{currentType==0?'' : 'choose'}}" bindtap="changeType">接单时间</button>
+            <button data-index="1" class="{{currentType==1?'' : 'choose'}}" bindtap="changeType">审核时间</button>
+        </view>
+        <picker mode="date" value="{{startdate}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateStart">        
+          <view class="picker">{{startdate}}</view>
+        </picker>
+        <picker mode="date" value="{{enddate}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateEnd">
+           <view class="picker">{{enddate}}</view>
+        </picker>
+         <picker mode="selector" bindchange="bindPickerChange" value="{{index}}" range="{{platforms}}" range-key="{{'platformName'}}">
+          <view class="picker">
+                {{platforms[index].platformName}}
+          </view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    
+     
+</view>

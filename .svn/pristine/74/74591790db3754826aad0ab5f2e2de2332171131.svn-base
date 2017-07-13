@@ -1,0 +1,143 @@
+// pages/echart-column/echart-column.js
+var Echarts=require('../../utils/wxcharts.js');
+var util = require('../../utils/util.js');
+Page({
+    data:{
+        startdate: '',
+        enddate: util.formatTime(new Date()),
+        pickshow: true,
+        iconshow: false,
+        confirmshow: true       
+    },
+    //起始时间
+    bindDateStart: function(e){
+        this.setData({
+            startdate: (e.detail.value).replace(/-/g,'/'),
+            enddate: util.dateDiffDay((e.detail.value),4,'after')
+        })
+    },
+    //结束时间
+    bindDateEnd: function(e){
+        this.setData({
+            enddate: (e.detail.value).replace(/-/g,'/'),
+            startdate: util.dateDiffDay((e.detail.value),4,'before')
+        })
+    },
+    bindShow: function(){
+        console.log(111);
+        this.setData({
+            pickshow: false ,
+            iconshow: true,
+            confirmshow: false 
+        })
+    },
+    bindHide: function(){
+        this.setData({ 
+            pickshow: true ,        
+            iconshow: false,
+            confirmshow: true 
+        });
+        console.log(this.data.startdate);
+        this.requestData();
+    },
+    //前查
+    bindBefore: function(){
+        var curStart = this.data.startdate,
+            curEnd = this.data.enddate; 
+        this.setData({
+            startdate: util.dateDiffDay(curStart,5,'before'),
+            enddate: util.dateDiffDay(curEnd,5,'before')
+        });
+        this.requestData();
+    },
+    //后查
+    bindAfter: function(){
+        var curStart = this.data.startdate,
+            curEnd = this.data.enddate; 
+        this.setData({
+            startdate: util.dateDiffDay(curStart,5,'after'),
+            enddate: util.dateDiffDay(curEnd,5,'after')
+        });
+        this.requestData();
+    },
+    requestData: function(){
+        var self=this;
+        wx.getSystemInfo({
+          success: function(res) {     
+            console.log(res.windowWidth); 
+            self.setData({
+              windowWidth: res.windowWidth
+            })      
+          }
+        });
+        var url="http://ldjc.szsdqh.com:5016/router?method=statistics.enteringLeaving&format=json&v=1.0&data={%22parameter%22:{%22startTime%22:%22"+this.data.startdate+"%22,%22endTime%22:%22"+this.data.enddate+"%22,%22dayMonth%22:%220%22}}&sessionid=session_5ec4c30122991f71";
+
+        wx.request({
+          url:url,
+          method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+          // header: {}, // 设置请求的 header
+          header: {
+            "Content-Type": "application/json"
+          },
+          success: function(res){
+            wx.hideLoading();
+            console.log(res);
+            if(res.data.success==true){
+                var datalist = res.data.data;       
+                if(datalist.length!=0){
+                    console.log(datalist);
+                    var dateList=[];
+                    var outData=[],importData=[];
+                    datalist.forEach(function(item){          
+                          dateList.push(item.date);
+                          outData.push(item.purchase);
+                          importData.push(item.shipments);
+                    });
+                    new Echarts({
+                        canvasId: 'echarts-canvas',
+                        type: 'column',
+                        categories: dateList,
+                        series: [{
+                            name: '出港',
+                            data: outData
+                        }, {
+                            name: '入港',
+                            data: importData
+                        }],
+                        yAxis: {
+                            format: function (val) {
+                                return val + '件';
+                            }
+                        },
+                        width: self.data.windowWidth,
+                        height: 300
+                  });
+                }else{
+                     util.showMsg('系统暂无数据！',false);
+                     return false;
+                }
+            }
+          },
+          fail: function() {
+            // fail
+          },
+          complete: function() {
+            // complete
+          }
+        });
+    },
+    onLoad:function(){
+      var self=this;                     
+      this.setData({
+         startdate: util.dateDiffDay(self.data.enddate,4,'before')
+       }); 
+       console.log(typeof this.data.enddate);     
+    },
+    onReady: function(){
+       // 页面渲染完成
+       
+        this.requestData();
+        
+    }
+
+});

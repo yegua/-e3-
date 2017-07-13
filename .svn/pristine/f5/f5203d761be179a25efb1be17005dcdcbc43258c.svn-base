@@ -1,0 +1,6 @@
+<!--pages/query/selectExpress/selectExpress.wxml-->
+<view class="ui-lists">     
+    <view class="view-cell" wx:for="{{listData}}" data-name="{{item.data}}" data-code="{{item.id}}" bindtap="selectedList">        
+        {{item.data}}         
+    </view>     
+</view>

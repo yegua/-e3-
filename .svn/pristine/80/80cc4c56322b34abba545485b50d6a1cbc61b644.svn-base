@@ -1,0 +1,30 @@
+
+.flex-item{
+    width: 100%;
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+}
+.flex-item .index-menu-item{
+    -webkit-box-flex: 32%;
+    -webkit-flex: 32%;
+    flex: 32%;
+    max-width: 32%;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+}
+.flex-item .index-menu-item image{
+    width: 100%;
+    height: 120px;
+}
+.flex-item .index-menu-item text{
+   display: block;
+   font-size: 28rpx;
+   white-space: nowrap;
+   line-height: 1.2;
+   text-align: center;
+}

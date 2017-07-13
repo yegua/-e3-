@@ -1,0 +1,69 @@
+<!--pages/echart-area/echart-area.wxml-->
+<view id="chart-container">
+    <view class="section-title">{{startdate}}—{{enddate}}</view>
+<swiper current="{{swiperCurrent}}" bindchange="swiperChange">  
+    <swiper-item>
+        <canvas canvas-id="echarts-canvas" />
+    </swiper-item>
+    <swiper-item>
+        <view class="table">
+            <view class="tr bg-w">
+              <view class="th">区域名称</view>
+              <view class="th">票数</view>
+              <view class="th ">百分比</view>
+            </view>
+            <block wx:for="{{listData}}" wx:key="{{data}}">
+              <view class="tr bg-g">
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.value}}</view>
+                <view class="td">{{item.percent}}</view>
+              </view>
+            </block>
+             <view class="tr bg-w">
+                <view class="td">汇总</view>
+                <view class="td">{{totalNum}}</view>
+                <view class="td">{{totalPer}}</view>
+              </view>
+        </view>
+    </swiper-item>
+    <swiper-item>
+        <view class="table">
+            <view class="tr bg-w">
+              <view class="th">区域名称</view>
+              <view class="th">票数</view>
+            </view>
+            <block wx:for="{{otherData}}" wx:key="{{data}}">
+              <view class="tr bg-g">
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.value}}</view>
+              </view>
+            </block>
+        </view>
+    </swiper-item>
+    <view class="dots">        
+        <view data-index="0" bindtap="clickCurrent" class="dot{{swiperCurrent == 0 ? ' active' : ''}}">1</view>
+        <view data-index="1" bindtap="clickCurrent" class="dot{{swiperCurrent == 1 ? ' active' : ''}}">2</view>
+        <view data-index="2" bindtap="clickCurrent" class="otherDetail dot{{swiperCurrent == 2 ? ' active' : ''}}">其他</view>          
+    </view> 
+    
+</swiper>
+ <view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect">
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateStart">        
+          <view class="picker">{{startdate}}</view>
+        </picker>
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateEnd">
+          <!--<input type="text" placeholder="结束时间" class="picker" value="{{enddate}}" disabled/>-->
+           <view class="picker">{{enddate}}</view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    
+</view>
+

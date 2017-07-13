@@ -1,0 +1,67 @@
+/* pages/kehumd/kehumd.wxss */
+#chart-container {
+  overflow-y: auto;
+  height: 100%;
+  position: relative;
+}
+.search-box {
+    width: 100%;
+    background: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    padding: 15px;
+}
+.search-input{
+  width: 80%;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding-left: 10px;
+}
+.kc-title {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+}
+#content-box {
+    width: 100%;
+    margin-top: 60px;
+}
+.ui-content-lists { 
+  border-bottom: 1px solid #ccc;
+}
+.content-lists view:nth-child(1){
+    padding: 10px 0 10px 20px;
+}
+.content-lists view:nth-child(2){   
+    padding: 10px 20px 10px 0;
+}
+.ui-letter {
+    width: 100%;
+    background: #ccc;
+    padding: 6px 20px;
+}
+.mui-indexed-list-bar{
+    width: 30px;
+	  background-color: #f5f5f5;
+	  position: fixed;
+	  height: 100%;
+	  z-index: 100;
+	  right: 0;
+    top: 20px;
+	  -webkit-transition: .2s;
+}
+.mui-indexed-list-bar view {
+	text-align: center;
+	font-size: 12px;
+	padding: 0px;
+	margin: 0px;
+	line-height: 20px;
+	color: #aaa;
+}
+.mui-indexed-list-bar view.active{
+    color:#ff6600;
+    background: antiquewhite;
+    font-size: 14px;
+}

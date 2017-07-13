@@ -1,0 +1,66 @@
+/* pages/zhongyuan-BBCOther-order/zhongyuan-BBCOther-order.wxss */
+/* pages/zhongyuan-BBC-order/zhongyuan-BBC-order.wxss */
+.table {
+  height: 55%;
+  overflow-y: scroll;
+  position: relative;
+}
+.table .content{
+    width: 100%;
+    position: absolute;
+    height: 66%;
+    overflow-y: auto;
+    top: 2.3rem;
+    left: 0;
+}
+.table .content .tr:nth-child(even){
+    background-color: #dff0d8;
+}
+.table .content .tr:nth-child(odd){
+    background-color: #f2dede;
+}
+.table .titletr {
+  position: absolute;
+  z-index: 99;
+  left: 0;
+  top: 0;
+}
+.table .lasttr {
+  position: absolute;
+  z-index: 99;
+  left: 0;
+  bottom: 1.5rem;
+}
+.table .td,.table .th {
+  font-size: 14px;
+  border-right: 1px dotted #fff;
+}
+.table .tr,.table .th {
+  height: 2.2rem;
+}
+#chart-container .pickerSelect {
+  display: block;
+}
+.pickerSelect picker{
+  width: 80%;
+  display: block;
+  margin: 5px auto;
+}
+#chart-container .section {
+  z-index: 99;
+}
+.timeStyle {
+  width: 100%;
+  text-align: center;
+}
+.timeStyle button {
+    display: inline-block;
+    width: 40%;
+    height: 60rpx;
+    line-height: 60rpx;
+    font-size: 16px;
+    background: #fff;
+}
+.timeStyle button.choose{
+  background: #ddd;
+}

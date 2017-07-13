@@ -1,0 +1,20 @@
+<!--login.wxml-->
+<view class="ui-container">
+    <view class="login-form">
+          <form> 
+            <!--<view id="mobile-num">
+                  <input type="text" placeholder="请输入手机号码" bindinput="listenerMobilenumInput"/>
+              </view>           -->
+              <view id="user-name">
+                  <input type="text" placeholder="请输入用户名" bindinput="listenerUsernameInput"/>
+              </view>
+              <view id="psw-info">
+                  <input type="password" placeholder="请输入密码" bindinput="listenerPasswordInput" />
+              </view>              
+          </form>
+          <view>
+            <button  id="btn-submit" bindtap="loginTap"> 登录 </button>
+        </view>
+    </view>
+    
+</view>

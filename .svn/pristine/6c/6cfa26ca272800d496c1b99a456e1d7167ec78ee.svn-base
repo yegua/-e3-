@@ -1,0 +1,141 @@
+function formatTime(date,type) {
+  	var year = date.getFullYear()
+  	var month = date.getMonth() + 1
+  	var day = date.getDate()
+
+  	var hour = date.getHours()
+  	var minute = date.getMinutes()
+  	var second = date.getSeconds()
+	if(type==="date"){
+		return [year, month, day].map(formatNumber).join('/');
+	}else if(type==="month"){
+		return [year, month].map(formatNumber).join('/');
+	}
+
+  
+};
+//前后n天的日期
+function dateDiffDay( currentDate , num, type ){
+	    var _s, _d, _time, _time2,
+	    	_dateObj = typeof currentDate == 'string' ? new Date( currentDate ) : currentDate,
+	    	_selectNum = num ? num : 4,
+	    	_curType = type ? type : 'before';
+	    	
+	    _time = _dateObj.getTime();
+      console.log(_dateObj);
+	    _time2 = _selectNum * 1000 * 3600 * 24;
+	    
+	    if ( _curType == 'before' ) {
+	   		_time -= _time2; 	
+	    } else {
+	    	_time += _time2;
+	    }
+	   
+	    _d = new Date( _time );
+	    _s = _d.getFullYear() + '/';
+	    _s += ( '00' + ( _d.getMonth() + 1 ) ).slice(-2) + '/';
+	    _s += ( '00' + _d.getDate() ).slice(-2);
+	    
+	    return _s;
+};
+function formatNumber(n) {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+// 提示框
+function showMsg(msg,flag){
+   if(flag==false){
+       wx.showToast({
+        title: msg,
+        image: '../../images/icon_warning.png',
+        duration: 2000
+      })
+   };
+   if(flag==true){
+      wx.showToast({
+        title: msg,
+        icon: 'success',
+        duration: 2000
+      })
+   }
+} 
+
+//前后n月的日期
+function dateDiffMonth(selectedDate, num, type ){
+	var _s = '',
+		_curMonth = 0,
+		_curYear = 0,
+		_diffYearValue = 0,
+		_diffMonthValue = 0,
+		_selectNum = num ? num : 4,
+		_curType = type ? type : 'before',
+		_selectedDateObj =  typeof selectedDate == 'string' ? new Date( selectedDate ) : selectedDate;
+		
+	_curYear = _selectedDateObj.getFullYear();
+	_curMonth = _selectedDateObj.getMonth() + 1;
+	_diffYearValue = _curYear;
+	if ( _curType == 'before' ) {
+		//绝对值
+		_diffMonthValue = Math.abs( _curMonth - _selectNum );
+		if ( _curMonth <= _selectNum ) {
+			_diffMonthValue = 12 - _diffMonthValue;
+			_diffYearValue -= 1;
+		}
+	} else {
+		_diffMonthValue = Math.abs( _curMonth + _selectNum );
+		if ( _diffMonthValue > 12 ) {
+			_diffMonthValue = _diffMonthValue - 12;
+			_diffYearValue += 1;
+		}
+	}
+		
+	_s = _diffYearValue + '-';
+	_s += ( '00' + ( _diffMonthValue ) ).slice(-2);
+	
+	return _s;
+};
+
+//请求数据函数
+ function requestData(method,start,end,successCallback,failureCallback){
+	var url="http://ldjc.szsdqh.com:5016/router?method="+ method +"&format=json&v=1.0&data={%22parameter%22:{%22startTime%22:%22"+start+"%22,%22endTime%22:%22"+end+"%22,%22dayMonth%22:%220%22}}&sessionid=session_1c309a8e5ff10f6f";
+	wx.request({
+          url:url,
+          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+          // header: {}, // 设置请求的 header
+          header: {
+            "Content-Type": "application/json"
+          },
+          success: function(res){
+				wx.hideLoading();
+				console.log(res);
+				if(res.data.success==true){
+					var datalist = res.data.data;       
+					if(datalist.length!=0){
+						console.log(datalist);
+						//还要判断所传的参数是不是回调函数
+						if ( typeof successCallback == 'function' ) successCallback( datalist );
+					}else{
+						showMsg('系统暂无数据！',false);						 
+						if( !datalist.desc || datalist.desc == '' ) {
+							datalist.desc = '系统错误!';
+						}
+						if ( typeof failureCallback == 'function' ) failureCallback( datalist );
+						return false;
+					}
+				}
+          },
+          fail: function() {
+			  	util.showMsg('网络错误！',false);
+          },
+          complete: function() {
+            // complete
+          }
+        });
+}
+module.exports = {
+  formatTime: formatTime,
+  showMsg: showMsg,
+  dateDiffDay: dateDiffDay,
+  dateDiffMonth: dateDiffMonth,
+  requestData: requestData
+}

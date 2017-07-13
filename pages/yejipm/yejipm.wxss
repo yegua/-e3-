@@ -1,0 +1,38 @@
+/* pages/yejipm/yejipm.wxss */
+#chart-container .pickerSelect {
+  display: block;
+  padding-left: 30px;
+}
+#chart-container .pickerSelect picker{
+  width: 70%;
+  padding: 6px 0 6px 30px;
+  margin: 5px 0;
+  background: #fff url(http://oqecsd659.bkt.clouddn.com/picker_search.png) no-repeat 3% center;
+  background-size: 40rpx;
+}
+.table {
+  height: 80%;
+  overflow-y: scroll;
+  position: relative;
+}
+.table .content{
+    width: 100%;
+    position: absolute;
+    top: 2.2rem;
+    left: 0;
+}
+.table .titletr {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  top: 0;
+}
+.table .lasttr {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  bottom: 1.5rem;
+}
+#chart-container swiper .dots{
+  bottom: 0;
+}

@@ -1,0 +1,17 @@
+<view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect">
+       <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateDay">        
+          <view class="picker">{{dayDate}}</view>
+        </picker>
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateMonth">
+           <view class="picker">{{monthDate}}</view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    

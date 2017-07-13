@@ -1,0 +1,12 @@
+<!--pages/.wxml-->
+<view class="user-info">
+    <view class="user-img"></view>
+    <view style="border-right: 1px solid #ccc;">南星桥总部</view>
+    <view>南星桥</view>
+</view>
+<view class="fun-title user-title">
+    账户设置
+</view>
+<view class="fun-title user-title" >
+    设置
+</view>

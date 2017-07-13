@@ -1,0 +1,46 @@
+var app = getApp()
+Page({
+  data: {
+    imgUrls: [
+      '../../images/main_slither_1.png',
+      '../../images/main_slither_2.png',
+      '../../images/main_slither_3.png'
+    ],
+    indicatorDots: true,
+    autoplay: true,
+    interval: 3000,
+    duration: 1000
+  },
+  onLoad: function () {
+    console.log('onLoad')
+    var that = this
+    //调用应用实例的方法获取全局数据
+    app.getUserInfo(function(userInfo){
+      //更新数据
+      that.setData({
+        userInfo:userInfo
+      })
+    })
+  },
+  scanCode: function(){
+      wx.scanCode({
+        onlyFromCamera: true,
+        success: function (res) {
+            var _scanCode = res.result;
+            wx.setStorageSync('code', _scanCode );
+            wx.navigateTo({
+              url: '/pages/query/kuaijiangz/kuaijiangz'
+            })
+        },
+        fail: function (res) { },
+        complete: function (res) { },
+      })
+  },
+  gotoQuery: function(){
+    wx.hideKeyboard();
+    wx.navigateTo({
+      url:'/pages/query/kuaijiangz/kuaijiangz'
+    })
+  }
+})
+

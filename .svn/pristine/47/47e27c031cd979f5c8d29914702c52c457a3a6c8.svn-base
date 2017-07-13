@@ -1,0 +1,115 @@
+//login.js
+var util = require('../../utils/util.js');
+//获取应用实例
+var app = getApp()
+Page({
+  data: {
+    username: '',
+    password: '' ,
+    imgUrl:['../../images/login_bg.png','../../images/login_user.png','../../images/login_password.png']  
+  },
+  //事件处理函数
+  formSubmit: function(e) {
+    console.log(e.detail.value);
+  },
+  /** 监听帐号输入 */
+ listenerUsernameInput: function (e) {
+    this.data.username = e.detail.value;
+ },
+ /** 监听密码输入 */
+ listenerPasswordInput: function (e) {
+    this.data.password = e.detail.value;
+ },
+ loginTap: function(){
+   var _name = this.data.username;
+   var _psw = this.data.password;
+   var that = this;
+   if(_name == ''){
+      util.showMsg('用户名不能为空！',false);
+      return;
+   };
+   if(_psw == ''){
+       util.showMsg('密码不能为空！',false);
+       return;
+   };
+   wx.setStorageSync('name',_name);
+    wx.setStorageSync('password',_psw);
+   wx.showLoading({
+        title: '登录中...'
+    });
+    var urlStr = app.globalData.BaseURL;
+    var _dataObj = {
+        parameter: {
+          imei:"A00000394D861B",
+          loginName: _name,
+          password: _psw
+        }
+    };
+    var exePrams =  {
+			method : 'app.login',
+			format : 'json',
+			v      : '1.0',
+			data   : JSON.stringify(_dataObj)
+		};
+    // wx.request({
+    //   url: "http://ldjc.szmsd.com:5016/router?method=app.login&format=json&callback=aa&v=1.0&data={%22parameter%22:{%22imei%22:%22A00000394D861B%22,%22loginName%22:%221003@admin%22,%22password%22:%22123456%22}}",
+    //   method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+    //   dataType: 'json',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   success: function(res){
+    //     wx.hideLoading();
+    //     var datalist = res.data;
+    //     console.log(datalist);       
+    //       wx.switchTab({
+    //         url:"/pages/index/index"    
+    //       });
+        
+    //   },
+    //   fail: function() {
+    //     // fail
+    //   },
+    //   complete: function() {
+    //     // complete
+    //   }
+    // });
+    wx.request({
+      url: urlStr,
+      method: 'GET',
+      data: exePrams,
+      dataType: 'json',
+      success: function(res){
+        wx.hideLoading();
+        var datalist = res.data;
+        var userDetail = JSON.parse(datalist.data);
+        console.log(datalist);
+         if(datalist.success==true){
+            wx.setStorageSync('sessionid',datalist.sessionid);
+            wx.setStorageSync('userDetail', JSON.stringify({employeeName: userDetail.employeeName,sitename: userDetail.sitename,funclist:userDetail.funclist})); 
+            wx.switchTab({
+              url:"/pages/index/index"    
+            }); 
+         }else{
+           util.showMsg('登录失败！',false);
+         };     
+          
+        
+      },
+
+    })
+    
+ },
+  onLoad: function () {
+    if(wx.getStorageSync('name')){
+      this.setData({
+        username: wx.getStorageSync('name')
+      })
+    };
+    if(wx.getStorageSync('password')){
+      this.setData({
+        password: wx.getStorageSync('password')
+      })
+    }
+  }
+})

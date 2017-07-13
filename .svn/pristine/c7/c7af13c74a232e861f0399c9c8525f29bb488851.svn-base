@@ -1,0 +1,235 @@
+// pages/zhongyuan-BBC-order/zhongyuan-BBC-order.js
+var util = require('../../utils/util.js');
+var app = getApp();
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    warehouse: ['全部仓库','一号仓','富力仓','黄埔仓'],
+    platforms: [
+      { platformName: '平台选择...', platformCode: ''}],
+    currentIndex: '全部仓库',
+    pickshow: true,
+    iconshow: false,
+    confirmshow: true,
+    startdate: util.formatTime(new Date(), 'date') +' 00:00:00',
+    enddate: util.formatTime(new Date(), 'date')+' 23:59:59',
+    index: 0,
+    currentType: 0
+  },
+  clickSelect: function(e){
+      this.setData({
+          currentIndex : e.target.dataset.index
+      });
+      this.requestData(e.target.dataset.index);
+  },
+  changeType: function(e){
+    this.setData({
+      currentType: e.target.dataset.index
+    })
+  },
+  //起始时间
+  bindDateStart: function (e) {
+    this.setData({
+      startdate: (e.detail.value).replace(/-/g, '/')
+    })
+  },
+  //结束时间
+  bindDateEnd: function (e) {
+    this.setData({
+      enddate: (e.detail.value).replace(/-/g, '/')
+    })
+  },
+  //前查
+  bindBefore: function () {
+    var curStart = this.data.startdate,
+      curEnd = this.data.enddate;
+    this.setData({
+      startdate: util.dateDiffDay(curStart, 1, 'before') + ' 00:00:00',
+      enddate: util.dateDiffDay(curStart, 1, 'before') + ' 23:59:59'
+    });
+    this.requestData(this.data.currentIndex);
+  },
+  //后查
+  bindAfter: function () {
+    var curStart = this.data.startdate,
+      curEnd = this.data.enddate;
+    this.setData({
+      startdate: util.dateDiffDay(curEnd, 1, 'after') + ' 00:00:00',
+      enddate: util.dateDiffDay(curEnd, 1, 'after') + ' 23:59:59'
+    });
+    this.requestData(this.data.currentIndex);
+  },
+  bindShow: function () {
+    console.log(111);
+    this.setData({
+      pickshow: false,
+      iconshow: true,
+      confirmshow: false
+    })
+  },
+  bindHide: function () {
+    this.setData({
+      pickshow: true,
+      iconshow: false,
+      confirmshow: true
+    });
+    console.log(this.data.startdate);
+    this.requestData(this.data.currentIndex);
+  },
+  bindPickerChange: function (e) {
+    this.setData({
+      index: e.detail.value
+    })
+  },
+  requestData: function(flag){
+      var self = this;
+      if (!util.compareWithDate(self.data.enddate, self.data.startdate)) {
+        util.showMsg('起始日期不能大于结束日期', false);
+        return false;
+      }; 
+      //限制只能查询三十天内的数据
+      var start=new Date(self.data.startdate.slice(0,11));
+      var end=new Date(self.data.enddate.slice(0,11));
+      var days=(end-start)/(1000*3600*24);
+      if(days>31){
+          util.showMsg( '最多只能查询30天内的数据，请重新输入' );					
+          return;
+      };
+	    util.requestData('zy.operation', {
+	        startTime: this.data.startdate,
+	        endTime: this.data.enddate,
+	        type: '1',
+          platformCode: self.data.platforms[self.data.index].platformCode,
+	        dataType: self.data.currentType
+	    }, wx.getStorageSync('sessionid'),
+	      function(res){
+          var platData = res.platformTotal, datalist = res.resultList,platTem = [{ platformName: '平台选择...', platformCode: '' }],
+          _platData=[],totalWeight=0,totalNoweight=0,totalComple=0;
+	          for(var key in platData){
+                platTem.push(platData[key]);            
+	          };        
+            if(!wx.getStorageSync('platforms')){
+                wx.setStorageSync('platforms', JSON.stringify(platTem))
+            };
+            //var flag = self.data.currentIndex;
+            function showAll(){
+                for (var key in platData) {
+                    _platData.push(platData[key]);
+                };
+                _platData.forEach(function (item) {
+                  totalWeight += item.alreadyWeighing;
+                  totalNoweight += item.noWeighing;
+                });
+                if (totalWeight == 0 && totalNoweight == 0) {
+                  totalComple = 0 + '%';
+                } else {
+                  totalComple = (totalWeight / (totalWeight + totalNoweight) * 100).toFixed(1) + '%';
+                }
+
+            }
+            function showData(flag){
+                if(flag === '全部仓库'){
+                    showAll();
+                };
+                console.log(flag);
+                datalist.forEach(function(item, index) {
+                    var _curcomplete = 0;
+                    if (item.completionRate != 0) {
+                      _curcomplete = item.completionRate + '%';
+                    };
+                    //console.log(item)
+                    if (item.warehouseName === flag) {
+                        _platData.push(item);                       
+                        //合计数据
+                        totalWeight += item.alreadyWeighing;
+                        totalNoweight += item.noWeighing;
+                        if (totalWeight == 0 && totalNoweight == 0) {
+                          totalComple = 0 + '%';
+                        } else {
+                          totalComple = (totalWeight / (totalWeight + totalNoweight) * 100).toFixed(1) + '%';
+                        }
+                    };
+                });
+                
+                self.setData({
+                  totalOrder: res.total.orderTotal,
+                  totalOrderComplete: res.total.totalCompletionRate + '%',
+                  listData: _platData,
+                  totalWeight: totalWeight,
+                  totalNoweight: totalNoweight,
+                  totalComplete: totalComple
+                });
+            };
+            showData(flag);
+	    })
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+      var self = this;
+      this.requestData(this.data.currentIndex);
+      try {
+        var _platforms = JSON.parse(wx.getStorageSync('platforms'));
+        if (_platforms) {
+            self.setData({
+              platforms: _platforms              
+            })
+        };
+      } catch (e) {
+        // Do something when catch error
+      }
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  }
+})

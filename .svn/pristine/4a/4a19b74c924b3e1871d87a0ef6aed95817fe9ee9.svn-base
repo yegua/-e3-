@@ -1,0 +1,7 @@
+/* pages/huoliangfb/huoliangfb.wxss */
+#chart-container swiper .otherDetail{
+  font-size: 14px; 
+  margin-left: 10px;
+  height: 40rpx;
+  line-height: 40rpx;
+}

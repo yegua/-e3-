@@ -1,0 +1,11 @@
+<view id="query-content">
+      <view class="search-input flex flex-align-center">
+        <input type="text" placeholder="请输入单号查询快递信息" value="{{code}}" bindchange="bindChangeinput"/>
+        <text bindtap="scanCode"></text>
+    </view>
+    <view class="ui-select-row flex flex-pack-justify flex-align-center">
+        <text>快递公司</text>
+        <text bindtap="selectExpress">{{expressName}}</text>
+        <text class="icon-right" bindtap="selectExpress"></text>
+    </view>
+</view>

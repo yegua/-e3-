@@ -1,0 +1,31 @@
+/* pages/kehuyj/kehuyj.wxss */
+.kehu-name {
+  width: 100%;
+  text-align: center;
+  font-size: 26rpx;
+  color: #01aef0;
+}
+#chart-container .pickerSelect {
+  display: block;
+  padding-left: 30px;
+}
+#chart-container .pickerSelect .selectKehu{
+  width: 80%;
+  padding: 5px 0 5px 30px;
+  border: 1px solid #161616;
+  border-radius: 3px;
+  font-size: 36rpx;
+  background: #fff url(http://oqecsd659.bkt.clouddn.com/picker_search.png) no-repeat 3% center;
+  background-size: 40rpx;
+  box-sizing: border-box;
+}
+#chart-container .pickerSelect picker{
+  width: 80%;
+  padding: 6px 0 6px 30px;
+  margin: 5px 0;
+  background: #fff url(http://oqecsd659.bkt.clouddn.com/picker_search.png) no-repeat 3% center;
+  background-size: 40rpx;
+}
+#chart-container .pickerSelect view {
+  color: #999;
+}

@@ -1,0 +1,106 @@
+/* pages/zhongyuan-BBC-order/zhongyuan-BBC-order.wxss */
+.ui-total-statistics{
+    width: 100%;
+		padding: 15px;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		margin-bottom: 5px;			
+		border-radius: 5px;
+		background-color: #fff;
+}
+.ui-total-statistics label{
+      width: 45%;
+			padding: 10px;
+			border-radius: 5px;
+			text-align: center;
+			border: 1px solid #ddd;
+			font-size: 18px;		
+}
+.ui-total-statistics label:nth-child(1){
+			margin-right: 5%;
+		}
+.ui-total-statistics input {
+      width: 55%;
+			padding: 5px 0;
+			border: none;
+			display: block;
+			text-align: center;
+			width: 100%;
+			font-size: 26px;
+			color: red;
+			font-weight: 600;
+}
+.ui-warehouse-lists {
+    width: 100%;
+    padding: 15px;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		background-color: #fff;
+}
+.ui-warehouse-lists text {
+    display: block;
+    padding: 12px; 
+		border-radius: 3px;
+    font-size: 16px;
+}
+.ui-warehouse-lists text.selected{
+			background-color: #e9967a;
+			color: #fff;
+			font-weight: 800;
+}
+.table {
+  height: 55%;
+  overflow-y: scroll;
+  position: relative;
+}
+.table .content{
+    width: 100%;
+    position: absolute;
+    top: 2.2rem;
+    left: 0;
+}
+.table .titletr {
+  position: absolute;
+  z-index: 99;
+  left: 0;
+  top: 0;
+}
+.table .lasttr {
+  position: absolute;
+  z-index: 99;
+  left: 0;
+  bottom: 1.5rem;
+}
+.table .td,.table .th {
+  font-size: 14px;
+  border-right: 1px dotted #fff;
+}
+.table .tr,.table .th {
+  height: 2rem;
+}
+#chart-container .pickerSelect {
+  display: block;
+}
+.pickerSelect picker{
+  width: 80%;
+  display: block;
+  margin: 5px auto;
+}
+#chart-container .section {
+  z-index: 99;
+}
+.timeStyle {
+  width: 100%;
+  text-align: center;
+}
+.timeStyle button {
+    display: inline-block;
+    width: 40%;
+    height: 60rpx;
+    line-height: 60rpx;
+    font-size: 16px;
+    background: #fff;
+}
+.timeStyle button.choose{
+  background: #ddd;
+}

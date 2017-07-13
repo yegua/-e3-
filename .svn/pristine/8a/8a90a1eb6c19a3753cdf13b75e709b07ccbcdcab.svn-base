@@ -1,0 +1,14 @@
+<!--index.wxml-->
+<view>
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}">
+        <swiper-item>
+            <image src="{{item}}" class="slide-image" width="100%"/>
+        </swiper-item>
+    </block>
+    </swiper>
+    <view class="search-input flex flex-align-center">
+        <input type="text" placeholder="请输入单号查询快递信息" bindfocus="gotoQuery"/>
+        <text bindtap="scanCode"></text>
+    </view>
+</view>

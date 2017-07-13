@@ -1,0 +1,175 @@
+// pages/zhongyuan-BBC-order/zhongyuan-BBC-order.js
+var util = require('../../utils/util.js');
+var app = getApp();
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    warehouse: ['全部仓库','一号仓','富力仓','黄埔仓'],
+    platforms: [
+      { platName: '平台选择...', platNum: ''},
+      { platName: '京东', platNum: '8028' },
+      { platName: '苏宁', platNum: '8014' },
+      { platName: '线下', platNum: '301' },
+      { platName: '唯品会', platNum: '8001' },
+      { platName: '通源立', platNum: '8048' },
+      { platName: '其他', platNum: '8038' }],
+    currentIndex: 0,
+    pickshow: true,
+    iconshow: false,
+    confirmshow: true,
+    startdate: util.formatTime(new Date(), 'date') +' 00:00:00',
+    enddate: util.formatTime(new Date(), 'date')+' 23:59:59',
+    index: 0,
+    currentType: 0
+  },
+  clickSelect: function(e){
+      this.setData({
+          currentIndex : e.target.dataset.index
+      })
+  },
+  changeType: function(e){
+    this.setData({
+      currentType: e.target.dataset.index
+    })
+  },
+  //起始时间
+  bindDateStart: function (e) {
+    this.setData({
+      startdate: (e.detail.value).replace(/-/g, '/')
+    })
+  },
+  //结束时间
+  bindDateEnd: function (e) {
+    this.setData({
+      enddate: (e.detail.value).replace(/-/g, '/')
+    })
+  },
+  //前查
+  bindBefore: function () {
+    var curStart = this.data.startdate,
+      curEnd = this.data.enddate;
+    this.setData({
+      startdate: util.dateDiffDay(curStart, 1, 'before') + ' 00:00:00',
+      enddate: util.dateDiffDay(curStart, 1, 'before') + ' 23:59:59'
+    });
+    this.requestData();
+  },
+  //后查
+  bindAfter: function () {
+    var curStart = this.data.startdate,
+      curEnd = this.data.enddate;
+    this.setData({
+      startdate: util.dateDiffDay(curEnd, 1, 'after') + ' 00:00:00',
+      enddate: util.dateDiffDay(curEnd, 1, 'after') + ' 23:59:59'
+    });
+    this.requestData();
+  },
+  bindShow: function () {
+    console.log(111);
+    this.setData({
+      pickshow: false,
+      iconshow: true,
+      confirmshow: false
+    })
+  },
+  bindHide: function () {
+    this.setData({
+      pickshow: true,
+      iconshow: false,
+      confirmshow: true
+    });
+    console.log(this.data.startdate);
+    this.requestData();
+  },
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
+  requestData: function(){
+      var self = this;
+      if (!util.compareWithDate(self.data.enddate, self.data.startdate)) {
+        util.showMsg('起始日期不能大于结束日期', false);
+        return false;
+      }; 
+      util.requestData('zy.operation', {
+        startTime: this.data.startdate,
+        endTime: this.data.enddate,
+        type: '1',
+        platformCode: self.data.platforms[self.data.index].platNum,
+        dataType: self.data.currentType
+      }, wx.getStorageSync('sessionid'),
+      function(res){
+          var platData = res.platformTotal,platTem=[],platobj={};
+          for(var key in platData){
+              platobj['platNum'] = platData[key]['platformCode'];
+              platobj['platName'] = platData[key]['platformName'];
+              platTem.push(platobj);            
+          };        
+          console.log(platTem);
+          self.setData({
+            totalOrder: res.total.orderTotal,
+            totalOrderComplete: res.total.totalCompletionRate + '%'
+          })
+      })
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.requestData();
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  }
+})

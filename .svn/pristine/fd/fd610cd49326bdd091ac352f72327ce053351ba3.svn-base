@@ -1,0 +1,15 @@
+<view class="ui-back">
+    <text class="ui-back-icon" bindtap="gotoLast"></text>
+    快递跟踪详情
+</view>
+<view class="ui-detail-num">运单号：<text>{{queryCode}}</text></view>
+<view class="ui-kuaijiangz-list">
+      <view class="ui-kuaijiangz-content"  wx:for="{{queryDetail}}" >
+          <!--<view class="ui-icon-order ui-icon-newestorder"></view>
+          -->
+          <!--<view class="ui-icon-order"><icon type="circle" size="15" color="{{ index == 0? '#1E90FF' : '#ccc'}}"/></view>-->
+          <view class="ui-icon-order {{index==0?'ui-icon-newestorder':'ui-icon-oldorder'}}"></view>
+          <view class="ui-content-time">{{item.scanTime}}</view>
+          <view class="ui-content-detial">{{item.desc}}</view>
+      </view>
+</view>

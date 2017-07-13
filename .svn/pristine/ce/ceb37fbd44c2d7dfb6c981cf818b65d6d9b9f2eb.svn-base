@@ -1,0 +1,154 @@
+// pages/echart-area/echart-area.js
+var Echarts=require('../../utils/wxcharts.js');
+var util = require('../../utils/util.js');
+Page({
+    data:{
+        startdate: '',
+        enddate: util.formatTime(new Date(),'date'),
+        pickshow: true,
+        iconshow: false,
+        confirmshow: true       
+    },
+    //起始时间
+    bindDateStart: function(e){
+        this.setData({
+            startdate: (e.detail.value).replace(/-/g,'/'),
+            enddate: util.dateDiffDay((e.detail.value),30,'after')
+        })
+    },
+    //结束时间
+    bindDateEnd: function(e){
+        this.setData({
+            enddate: (e.detail.value).replace(/-/g,'/'),
+            startdate: util.dateDiffDay((e.detail.value),30,'before')
+        })
+    },
+    bindShow: function(){
+        console.log(111);
+        this.setData({
+            pickshow: false ,
+            iconshow: true,
+            confirmshow: false 
+        })
+    },
+    bindHide: function(){
+        this.setData({ 
+            pickshow: true ,        
+            iconshow: false,
+            confirmshow: true 
+        });
+        console.log(this.data.startdate);
+        this.requestData();
+    },
+    //前查
+    bindBefore: function(){
+        var curStart = this.data.startdate,
+            curEnd = this.data.enddate; 
+        this.setData({
+            startdate: util.dateDiffDay(curStart,30,'before'),
+            enddate: util.dateDiffDay(curStart,1,'before')
+        });
+        this.requestData();
+    },
+    //后查
+    bindAfter: function(){
+        var curStart = this.data.startdate,
+            curEnd = this.data.enddate; 
+        this.setData({
+            startdate: util.dateDiffDay(curEnd,1,'after'),
+            enddate: util.dateDiffDay(curEnd,30,'after')
+        });
+        this.requestData();
+    },
+    requestData: function(){
+        var self=this;
+        wx.getSystemInfo({
+          success: function(res) {     
+            console.log(res.windowWidth); 
+            self.setData({
+              windowWidth: res.windowWidth
+            })      
+          }
+        });
+        util.requestData('statistics.distribution',this.data.startdate,this.data.enddate,function(res){
+            var _showListArr = [],
+                _totalNum = 0,
+                _otherNum = 0,
+                _otherData = {},
+                _perLabel = '',
+                _tempLabel = '',
+                _otherAreaDataArr = [];
+             res.forEach(function(item,index){
+                _totalNum += parseFloat( item.value );
+            });
+            for ( var j = 0; j < res.length; j++ ) {
+                _tempLabel =  parseFloat(res[j].value);
+                if ( j < 5 ) {
+                    res[j].name = res[j].name;
+                    res[j].value = _tempLabel;
+                    if(res[j].name==' '){
+                        res[j].name = '偏远地区';
+                    }
+                    _showListArr.push( res[j] );
+                } else {
+                    _otherNum += parseFloat( res[j].value );
+                    _otherAreaDataArr.push( res[j] );
+                }
+                
+                if ( j == res.length - 1 ) {
+                    _otherData = {
+                        name : '其他',
+                        value : _otherNum
+                    };					
+                    _showListArr.push( _otherData );
+                }
+            };
+            new Echarts({
+                canvasId: 'echarts-canvas',
+                type: 'pie',
+                legend: true,
+                dataPointShape : true,
+                series: [{
+                    name: _showListArr[0].name,
+                    data: _showListArr[0].value,
+                    color: 'pink'
+                }, {
+                    name: _showListArr[1].name,
+                    data: _showListArr[1].value,
+                    color: '#ffebcd'
+                }, {
+                    name: _showListArr[2].name,
+                    data: _showListArr[2].value,
+                }, {
+                    name: _showListArr[3].name,
+                    data: _showListArr[3].value,
+                }, {
+                    name: _showListArr[4].name,
+                    data: _showListArr[4].value,
+                    color: '#6495ed'
+                },{
+                    name: _showListArr[5].name,
+                    data: _showListArr[5].value,
+                    color: '#5cb85c'
+                }],
+                width: self.data.windowWidth,
+                height: 300,
+                dataLabel: true
+            });
+        })
+    },
+    onLoad:function(){
+      var self=this;                     
+      this.setData({
+         startdate: util.dateDiffDay(self.data.enddate,30,'before')
+       }); 
+       console.log(typeof this.data.enddate);     
+    },
+    onReady: function(){
+       // 页面渲染完成
+       
+        this.requestData();
+        
+    }
+
+});

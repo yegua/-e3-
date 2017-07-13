@@ -1,0 +1,110 @@
+/* pages/yingyee/yingyee.wxss */
+/*营业额*/
+page{
+  /*overflow: hidden;*/
+}
+#chart-container {
+  margin-top: 0;
+}
+.ui-data-area {
+	text-align: center;
+}
+
+.ui-data-result {
+	height: 60px;
+    font-size: 40px;
+    font-weight: bolder;
+    color: white;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.ui-data-subTitle {
+    color: gray;
+    padding: 10px 0px 20px 0px;
+    text-align: center;
+}
+
+.ui-color-blue {
+	background-color: #47C0E0;
+}
+
+.ui-color-lightblue {
+	background-color: #87cefa;
+}
+.ui-color-orange {
+	background-color: #ffa07a;
+}
+
+.ui-color-green {
+	background-color: #73DC32;
+}
+
+.ui-color-orange2{
+	background-color: #fa8072;
+}
+.ui-list {
+	margin-bottom: 30px;
+	padding-top: 10px;
+	/*display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;/* android 4.4 */
+}
+
+.ui-list .ui-list-tabs {
+	  display: inline-block;
+	  width: 50%;
+    padding: 1px 20px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 14px;
+}
+
+.ui-list .ui-list-title {
+	  font-size: 16px;
+    font-weight: bolder;
+}
+
+.ui-list-subTitle {
+	  color: gray;
+    padding: 5px;
+}
+
+.ui-list-content {
+	  padding: 5px;
+	  margin-bottom: 10px;
+}
+
+.ui-list .ui-list-tabs:nth-child(even) {
+	  border-left: 1px solid #CCC9C9;
+}
+.sumBox{
+    width: 100%;
+    height: 36px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    position: fixed;
+    left: 0;
+    bottom: 41px;
+    text-align: center;
+    background: #0A8DDF;
+    line-height: 36px;
+    font-size: 16px;
+  }
+.sumBox .first{
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  background: #5bc3f4;
+  color: green;
+}
+.sumBox .second{
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  background: #26b4f6;
+  color: red;
+}

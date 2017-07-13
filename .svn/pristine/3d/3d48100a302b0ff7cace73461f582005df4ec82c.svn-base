@@ -1,0 +1,29 @@
+<!--pages/kehumd/kehumd.wxml-->
+<view id="chart-container">
+    <view class="search-box">
+         <input type="view" placeholder="请输入客户名" class="search-input" confirm-type="search" bindchange="searchInput"/>
+    </view>
+    <scroll-view id="content-box" scroll-y="true" style="height: {{scrollHeight}}px;" bindscroll="wxSortPickerViewScroll" scroll-top="{{scrollTop}}">
+        <view class="ui-content-lists" wx:for="{{contents}}" wx:key="id">
+             <view class="ui-letter" id="{{item.letter}}" >{{item.letter}}</view>
+            <view class="content-lists flex flex-pack-justify" wx:for="{{item.data}}" wx:for-item="data">
+               <view bindtap="selectCustomer" data-code="{{data.code}}" data-name="{{data.name}}">{{data.name}}</view>
+            </view>        
+        </view>
+    </scroll-view>
+    <!--<view class="mui-indexed-list-bar" wx:for="{{letterArr}}" wx:for-item="letter">
+        <view hover-class="active" data-tag="{{letter}}" bindtap="wxSortPickerViewTemTagTap">{{letter}}</view>
+    </view>-->
+   <block wx:if="{{isShowLetter}}">
+      <view class="showSlectedLetter">
+          {{showLetter}}
+      </view>
+    </block>
+    <scroll-view  class="mui-indexed-list-bar">
+        <block wx:for="{{letterArr}}" wx:for-item="item" wx:key="">
+        <view catchtouchstart="searchStart" catchtouchmove="searchMove" catchtouchend="searchEnd" data-tag="{{item}}" style="height: {{itemH}}px;">
+          {{item}}
+        </view>
+        </block>
+    </scroll-view>
+</view>

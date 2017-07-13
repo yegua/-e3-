@@ -1,0 +1,16 @@
+<!--pages/hlfbother/hlfbother.wxml-->
+<view id="chart-container">
+    <view class="section-title">{{datatime}}</view>
+    <view class="table">
+          <view class="tr bg-w">
+            <view class="th">区域名称</view>
+            <view class="th">票数</view>
+          </view>
+          <block wx:for="{{otherData}}" wx:key="{{data}}">
+            <view class="tr bg-g">
+              <view class="td">{{item.name}}</view>
+              <view class="td">{{item.value}}</view>
+            </view>
+          </block>
+      </view>
+</view>

@@ -1,0 +1,18 @@
+<view class="mui-title">
+  运单:<text>{{code}}</text>
+  </view>
+  <view class="mui-content">
+    <view class="ui-result-tip">
+      抱歉暂无查询记录
+    </view>
+    <view class="ui-result-company">
+      <text class="ui-company-label">快递公司：</text>
+      <text class="ui-company-name">{{companyName}}</text>
+    </view>
+    <view class="ui-btn-layout">
+      <text class="ui-company-phone" hidden="{{phoneToggle}}">{{phone}}</text>
+    </view>
+    <!--<view class="ui-btn-layout">
+      <button type="button" class="ui-company-website" hidden="{{siteToggle}}" bindtap="goExpressWebsite">官网</button>
+    </view>-->
+  </view>

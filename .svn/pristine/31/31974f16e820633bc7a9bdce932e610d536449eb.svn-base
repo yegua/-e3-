@@ -1,0 +1,24 @@
+<!--pages/paisongsx/paisongsx.wxml-->
+<view id="chart-container">
+    <view class="section-title">{{startdate}}-{{enddate}}</view>
+<canvas canvas-id="echarts-canvas" />
+ <view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect">
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateStart">        
+          <view class="picker">{{startdate}}</view>
+        </picker>
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateEnd">
+          <!--<input type="text" placeholder="结束时间" class="picker" value="{{enddate}}" disabled/>-->
+           <view class="picker">{{enddate}}</view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    
+</view>
+

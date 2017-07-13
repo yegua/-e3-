@@ -1,0 +1,10 @@
+<!--pages/kehumd/kehumd.wxml-->
+<view id="chart-container">
+    <input type="text" placeholder="请输入客户名" class="search-input"/>
+    <view class="ui-content-lists" wx:for="{{contents}}" wx:key="id">
+        <view class="ui-letter">{{item.letter}}</view>
+        <view class="content-lists flex flex-pack-justify" wx:for="{{item.data}}" wx:for-item="data">
+              <view bindtap="selectCustomer" data-code="{{data.code}}" data-name="{{data.name}}">{{data.name}}</view>
+        </view>        
+    </view>
+</view>

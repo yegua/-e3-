@@ -1,0 +1,455 @@
+// pages/query/kuaijiangz/kuaijiangz.js
+var util = require('../../../utils/util.js');
+var startX, startY, endX, endY, key, maxRight = 60;
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    code: '',
+    expressName: '请选择快递公司',
+    diabledColor: '#C5C3C3',
+    historyToggle: true,
+    historyToggleno: false,
+    showPopover: true,
+    showtoast: true
+  },
+  drawStart: function(e){
+    console.log('start');
+    var touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    var items = this.data.historyListData;
+    for (var i in items) {
+      var data = items[i];
+      data.startRight = data.right;
+    }
+    key = true;
+  },
+  drawMove: function(e){
+    var self = this;
+    var dataId = e.currentTarget.id;
+    var items = this.data.historyListData;
+    if (key) {
+      var touch = e.touches[0];
+      endX = touch.clientX;
+      endY = touch.clientY;
+      console.log("startX=" + startX + " endX=" + endX);
+      if (endX - startX == 0)
+        return;
+      var res = items;
+      //从右往左滑动
+
+      if ((endX - startX) < 0) {
+        for (var k in res) {
+          var data = res[k];
+          if (res[k].id == dataId) {
+            var startRight = res[k].startRight;
+            var change = startX - endX;
+            startRight += change;
+            if (startRight > maxRight)
+              startRight = maxRight;
+            res[k].right = startRight;
+          }
+        }
+      } else {//从左往右滑动
+        for (var k in res) {
+          var data = res[k];
+          if (res[k].id == dataId) {
+            var startRight = res[k].startRight;
+            var change = endX - startX;
+            startRight -= change;
+            if (startRight < 0)
+              startRight = 0;
+            res[k].right = startRight;
+          }
+        }
+      }
+      self.setData({
+        historyListData: items
+      });
+    }
+  },
+  drawEnd: function(e){
+    console.log('end');
+    var items = this.data.historyListData;
+    for (var i in items) {
+      var data = items[i];
+      if (data.right <= 100 / 2) {
+        data.right = 0;
+      } else {
+        data.right = maxRight;
+      }
+    }
+    this.setData({
+      historyListData: items
+    });
+  },
+  //删除历史记录
+  deleteHistoryRecordFn: function(e){
+      var id = e.target.dataset.id,
+        _type = e.target.dataset.type,
+      self = this;
+      console.log(e.target);
+      var historyItems = JSON.parse(wx.getStorageSync('dec_queryHistory_record'));
+      for (var i = 0; i < historyItems.length;i++){
+        if (historyItems[i].id === id && historyItems[i].type === _type){
+            historyItems.splice(i, 1);//把对应的数据给删除掉
+            break;
+        }        
+      };
+      console.log(historyItems);
+      wx.setStorageSync('dec_queryHistory_record', JSON.stringify(historyItems));
+      this.setData({
+        historyListData: historyItems.reverse()
+      });
+      if (historyItems.length==0){
+          self.setData({
+              historyToggle: true,
+              historyToggleno: false
+          })
+      }
+
+  },
+  //一键清除所有历史记录
+  clearHistoryListFn: function(){
+    wx.removeStorageSync('dec_queryHistory_record');
+    var items = this.data.historyListData;
+    items.length = 0;
+    this.setData({
+        historyListData: items,
+        historyToggle: true,
+        historyToggleno: false
+    });
+  },
+  //保存历史记录
+  setHistotyRecord: function(){
+    var self = this;
+    var _queryRecord = {
+        billcode : self.data.code,
+        id: self.data.code,
+        type : self.data.expressName,
+        aType : self.data.selectedType,
+        startRight: 0,
+        right: 0
+      };
+      
+      if( _queryRecord.aType !== 'normal' ){
+        _queryRecord.selectedValue = self.data.expressName;
+      }
+      
+      var _curHistoryData =  wx.getStorageSync( 'dec_queryHistory_record' ),
+        _curSaveToggle = false;
+      
+      if( !_curHistoryData ) {
+        _curHistoryData = [];
+      }else{
+        _curHistoryData = JSON.parse(_curHistoryData);
+      }
+      
+      for( var _index = 0; _index < _curHistoryData.length; _index++ ){
+        if( _curHistoryData[ _index ].billcode === self.data.code && _curHistoryData[ _index ].type === self.data.expressName  ) {
+          _curSaveToggle = true;
+        }
+      }
+      
+      if( !_curSaveToggle ) {
+        _curHistoryData.push( _queryRecord );
+        wx.setStorageSync( 'dec_queryHistory_record', JSON.stringify( _curHistoryData ) );
+        
+        // $timeout( function(){
+        //   $scope.historyToggle = true;
+        //   $scope.historyListData = _curHistoryData.reverse();
+        // } );
+        self.setData({
+            historyToggle: false,
+            historyToggleno: true,
+            historyListData: _curHistoryData.reverse()
+        })
+      }
+  },
+  //点击查看历史记录物流信息
+  historyQueryFn: function(e){
+    var _id = e.currentTarget.dataset.id,self = this;
+    var historyData = JSON.parse(wx.getStorageSync('dec_queryHistory_record'));
+    for(var i=0;i<historyData.length;i++){
+      if (historyData[i].id === _id){
+          //console.log(historyData[i]);
+          self.setData({
+            code: historyData[i].billcode,
+            selectedType: historyData[i].aType,
+            expressName: historyData[i].type
+          });
+          // //wx.removeStorageSync('dec_queryHistory_record', historyData[i]);
+          self.requestData(encodeURI(encodeURI(historyData[i].type)));
+       }
+    }
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+      var self = this;
+      if(wx.getStorageSync('code')){
+          self.setData({
+            code: wx.getStorageSync('code')
+          })
+      };
+      console.log(options)
+      if (options.billcode){
+          self.setData({
+            code: options.billcode,
+            expressName: options.name,
+            selectedType: options.type
+          })
+      };
+      if (wx.getStorageSync('dec_queryHistory_record')){
+        self.setData({
+          historyListData: JSON.parse(wx.getStorageSync('dec_queryHistory_record')).reverse(),
+          historyToggle: false,
+          historyToggleno: true
+        });
+      }
+  },
+  queryCodeFn: function(){
+    var self = this;
+    var cite = this.data.expressName;
+    this.setData({
+      diabledColor: '#DE7D33'
+    });
+    var _code = this.data.code;
+    if(_code.length!=0){
+      self.requestData(encodeURI(encodeURI(cite)));
+      //self.requestData(encodeURI(cite));
+      // wx.navigateTo({
+      //   url: '/pages/query/queryDetail/queryDetail?code=' + self.data.code,
+      // });
+    }else{   
+        self.setData({
+          showtoast: false,
+          toastMsg: '单号不能为空'
+        });
+        setTimeout(function () {
+          self.setData({
+            showtoast: true,
+          });
+        }, 2000)
+    };
+    
+    
+  },
+  bindChangeinput: function(e){
+      var _code = e.detail.value;
+      var self = this;
+      if(_code.length>=6){
+          self.setData({
+            showPopover: false
+          })
+      }else{
+        self.setData({
+          showPopover: true
+        })
+      };
+      this.setData({
+        code: e.detail.value
+      });
+      wx.setStorageSync('expressCode', _code);
+      wx.request({
+        url: 'http://kjgz.szmsd.com/query/queryAction!match.action?chars=' + _code,
+        method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        dataType: 'json',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        success: function(res){
+            var dataList = res.data;
+            console.log(dataList);
+            self.setData({
+              listData: dataList
+            })
+        }
+      })
+  },
+  hidePopover: function(){
+    this.setData({
+      showPopover: true
+    })
+  },
+  selectedList: function(e){  
+    var cite = e.target.dataset.name;
+    this.setData({
+      showPopover: true,
+    });
+    var self = this;
+    if(cite=='其他快递'){
+      wx.navigateTo({
+        url: '/pages/query/otherExpress/otherExpress?code=' + self.data.code,
+      });
+    }else{
+      self.setData({
+          expressName: cite,
+          selectedType: 'normal'
+      });
+      self.requestData(encodeURI(encodeURI(cite)));
+      //self.requestData(cite);
+    }
+  },
+  /**扫码 */
+  scanCode: function () {
+    var self = this;
+    wx.scanCode({
+      onlyFromCamera: true,
+      success: function (res) {
+        var _scanCode = res.result;
+        self.setData({
+          code: _scanCode
+        });
+        wx.setStorageSync('expressCode', _scanCode);
+       
+      },
+      fail: function (res) { },
+      complete: function (res) { },
+    })
+  },
+  selectExpress: function(){
+    var self = this;
+    var _code = this.data.code;
+    if (_code.length != 0) {
+      wx.navigateTo({
+        url: '/pages/query/selectExpress/selectExpress?code=' + self.data.code,
+      });
+    } else {
+      self.setData({
+        showtoast: false,
+        toastMsg: '单号不能为空'
+      });
+      setTimeout(function () {
+        self.setData({
+          showtoast: true,
+        });
+      }, 2000)
+    };
+  },
+  requestData: function(name){
+    wx.showLoading({
+      title: '加载中'
+    });
+      var self = this;
+      var _code = this.data.code;
+      console.log(_code, self.data.selectedType, name);
+      wx.request({
+        url: "http://kjgz.szmsd.com/query/queryAction!query.action?billcode=" + _code + "&aType="
+        + self.data.selectedType + "&type=" + name,
+        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        dataType: 'json',
+        headers: {
+          'Content-Type': 'application / x - www - form - urlencoded'
+        },
+        success: function (res) {
+            wx.hideLoading();
+            console.log(res);
+            if(res.data.success){
+                var requestData = res.data.data.track.details;
+                if (!res.data.data || !res.data.data.track) {
+                  self.setData({
+                    showtoast: false,
+                    toastMsg: res.message
+                  });
+                  setTimeout(function () {
+                    self.setData({
+                      showtoast: true,
+                    });
+                  }, 2000)
+                  return;
+                }
+
+                if (typeof res.data.data.track.billcode === 'undefined') {
+                  res.data.data.track.billcode = _code;
+                }
+                wx.setStorage({
+                  key: "queryData",
+                  data: JSON.stringify(requestData),
+                  success: function () {
+                      self.setHistotyRecord();
+                      wx.navigateTo({
+                        url: '/pages/query/queryDetail/queryDetail?code=' + self.data.code,
+                      });                
+                  }
+                })
+            }else{
+                var _paramsEr = {
+                  id: name,//快递名字
+                  code: _code,//运单号
+                  name: self.data.expressName//快递名字
+                };
+
+                if (res.data.ec) {
+                  _paramsEr = res.data.ec;
+                  _paramsEr.name = self.data.expressName;
+                  _paramsEr.code = self.data.code;
+                }
+               
+               //wx.setStorageSync('dec_resultFailPage_company', JSON.stringify(_paramsEr));
+                wx.setStorage({
+                  key: "dec_resultFailPage_company",
+                  data: JSON.stringify(_paramsEr),
+                  success: function () {
+                    wx.navigateTo({
+                      url: '/pages/query/resultFail/resultFail?code=' + self.data.code,
+                    });
+                  }
+                })
+            }
+        }
+      })
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  }
+})

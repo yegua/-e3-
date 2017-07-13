@@ -1,0 +1,56 @@
+<!--pages/yejipm/yejipm.wxml-->
+<view id="chart-container">
+    <view class="section-title">{{startdate}}-{{enddate}}</view>
+     <canvas canvas-id="echarts-canvas" />
+<!--<swiper current="{{swiperCurrent}}" bindchange="swiperChange">  
+    <swiper-item>
+        <canvas canvas-id="echarts-canvas" />
+    </swiper-item>
+    <swiper-item>
+        <view class="table">
+            <view class="tr bg-w titletr">
+              <view class="th">客户</view>
+              <view class="th">业绩量</view>            
+            </view>
+            <view class="content">
+              <view class="tr bg-g" wx:for="{{listData}}" wx:key="{{data}}">
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.value}}</view>              
+              </view>
+            </view>
+             <view class="tr bg-w lasttr">
+                <view class="td">汇总</view>
+                <view class="td">{{totalValue}}</view>              
+              </view>
+        </view>
+    </swiper-item>
+     <view class="dots">        
+        <view data-index="0" bindtap="clickCurrent" class="dot{{swiperCurrent == 0 ? ' active' : ''}}">1</view>
+        <view data-index="1" bindtap="clickCurrent" class="dot{{swiperCurrent == 1 ? ' active' : ''}}">2</view>          
+    </view>  
+</swiper>-->
+ <view class="section" hidden="{{pickshow}}">
+      <view class="section-title">日期选择器</view>
+      <view class="pickerSelect">
+        <radio-group class="radio-group" bindchange="radioChange">
+          <label class="radio">
+            <radio value="0" checked="checked"/>客户
+            <radio value="1" />部门
+          </label>
+        </radio-group>
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateStart">        
+          <view class="picker">{{startdate}}</view>
+        </picker>
+        <picker mode="date" value="{{date}}" start="2010-09-01" end="2017-09-01" bindchange="bindDateEnd">
+          <!--<input type="text" placeholder="结束时间" class="picker" value="{{enddate}}" disabled/>-->
+           <view class="picker">{{enddate}}</view>
+        </picker>
+      </view>     
+    </view>
+     <view class="selectTime">
+        <view bindtap="bindBefore">前查</view>
+        <view hidden="{{iconshow}}" bindtap="bindShow"></view>
+        <view hidden="{{confirmshow}}" bindtap="bindHide">确定</view>
+        <view bindtap="bindAfter">后查</view>
+    </view>    
+</view>

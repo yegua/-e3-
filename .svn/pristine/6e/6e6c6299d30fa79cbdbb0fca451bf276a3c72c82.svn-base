@@ -1,0 +1,5 @@
+/* pages/query/queryDetail/queryDetail.wxss */
+.ui-detail-num {
+	padding: 10px;
+	border-bottom: solid 1px #1E90FF;
+}

@@ -1,0 +1,58 @@
+/* pages/query/queryDetail/queryDetail.wxss */
+.ui-detail-num {
+	padding: 10px;
+	border-bottom: solid 1px #1E90FF;
+}
+.ui-kuaijiangz-list {
+	margin-top: 20px;
+	font-size: 14px;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+.ui-detail-num {
+	padding: 10px;
+	border-bottom: solid 1px #1E90FF;
+}
+
+.ui-kuaijiangz-list .ui-kuaijiangz-content:nth-child(1) {
+	color: #1E90FF;
+}
+.ui-list-date {
+	text-align: right;
+	width: 100px;
+	padding: 0px 10px;
+}
+
+.ui-icon-newestorder {
+	background: #EFEFF4 url(http://oqecsd659.bkt.clouddn.com/icon-newest.png) no-repeat 0px;
+}
+
+.ui-icon-oldorder {
+	background: #EFEFF4 url(http://oqecsd659.bkt.clouddn.com/icon-oldcircle.png) no-repeat 0px;
+}
+
+.ui-icon-order {
+	position: absolute;
+	left: -8px;
+  width: 12px;
+  height: 12px;
+  background-size: 100%;
+  border-radius: 100%;
+}
+.ui-kuaijiangz-content {
+	position: relative;
+	line-height: 20px;
+	padding: 0px 10px 10px 15px;
+	border-left: 1px solid #B3B0B0;
+}
+
+.ui-content-detial {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #B3B0B0;
+}
+
+.ui-content-time {
+	padding-bottom: 10px;
+  margin: 0 5px;
+}

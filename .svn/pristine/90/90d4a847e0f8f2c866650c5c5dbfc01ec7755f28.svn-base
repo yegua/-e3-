@@ -1,0 +1,18 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#e9967a",
+    "navigationBarTitleText": "移动E3-app",
+    "navigationBarTextStyle":"#fff"
+  },
+  "networkTimeout": {
+    "request": 2000,
+    "connectSocket": 2000,
+    "uploadFile": 2000,
+    "downloadFile": 2000
+  }
+}
